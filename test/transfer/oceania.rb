@@ -5,8 +5,8 @@ require 'mysql'
 require '../../lib/transfer'
 
 url = [
-"http://www.transfermarkt.co.uk/new-zealand/startseite/verein/9171",
-"http://www.transfermarkt.co.uk/fiji/startseite/verein/13955"
+"http://www.transfermarkt.co.uk/new-zealand/leistungsdaten/verein/9171",
+"http://www.transfermarkt.co.uk/fiji/leistungsdaten/verein/13955"
 ]
 
 national = [
@@ -15,7 +15,7 @@ national = [
 
 connection = Mysql::new("127.0.0.1", "root", "motokokusanagi", "soccer_player")
 
-for j in 1..(url.size-1)
+for j in 0..(url.size-1)
   test_doc = Transfer.crawl(url[j])
   player_url = Transfer.get_player_url(test_doc)
   player_doc = Transfer.get_player_doc(player_url)
@@ -28,11 +28,12 @@ for j in 1..(url.size-1)
   team_doc = Transfer.get_team_doc(team_url)
   team_national = Transfer.get_team_national(team_doc)
   division = Transfer.get_team_division(team_doc)
+  minutes = Transfer.get_player_minutes(test_doc)
 
-  st = connection.prepare("insert into transfer (name,age,height,position,national,team,team_national,division) values (?,?,?,?,?,?,?,?) on duplicate key update team=?,team_national=?,division=?")
+  st = connection.prepare("insert into transfer (name,age,height,position,national,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?) on duplicate key update team=?,team_national=?,division=?,minutes=?")
 
   for i in 0..(team_url.size-1)
-    st.execute name[i],age[i],height[i],position[i],national[j],team[i],team_national[i],division[i],team[i],team_national[i],division[i]
+    st.execute name[i],age[i],height[i],position[i],national[j],team[i],team_national[i],division[i],minutes[i],team[i],team_national[i],division[i],minutes[i]
   end
 end
 

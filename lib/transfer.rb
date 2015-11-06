@@ -19,6 +19,22 @@ module Transfer
     return player_doc
   end
 
+  def self.get_player_minutes(doc)
+    minutes = []
+    
+    minutes_odd = doc.xpath('//table[@class="items"]/tbody/tr[@class="odd"]/td[@class="rechts  "]')
+    for i in 0..(minutes_odd.size-1)
+      minutes.push(minutes_odd[i].text)
+    end
+
+    minutes_even = doc.xpath('//table[@class="items"]/tbody/tr[@class="even"]/td[@class="rechts  "]')
+    for i in 0..(minutes_even.size-1)
+      minutes.push(minutes_even[i].text)
+    end
+
+    return minutes
+  end
+
   def self.get_team_doc(team_url)
     team_doc = []
 
