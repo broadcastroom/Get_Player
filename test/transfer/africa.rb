@@ -10,9 +10,7 @@ url = [
 "http://www.transfermarkt.co.uk/nigeria/leistungsdaten/verein/3444/plus/0?reldata=%262015",
 "http://www.transfermarkt.co.uk/togo/leistungsdaten/verein/3815/plus/0?reldata=%262015",
 "http://www.transfermarkt.co.uk/morocco/leistungsdaten/verein/3575/plus/0?reldata=%262015",
-"http://www.transfermarkt.co.uk/sudan/leistungsdaten/verein/13313/plus/0?reldata=WMQ2%262016",
 "http://www.transfermarkt.co.uk/mauritania/leistungsdaten/verein/14238/plus/0?reldata=WMQ2%262016",
-"http://www.transfermarkt.co.uk/rwanda/leistungsdaten/verein/3855/plus/0?reldata=WMQ2%262016",
 "http://www.transfermarkt.co.uk/liberia/leistungsdaten/verein/9172/plus/0?reldata=WMQ2%262016",
 "http://www.transfermarkt.co.uk/angola/leistungsdaten/verein/3585/plus/0?reldata=%262015",
 "http://www.transfermarkt.co.uk/benin/leistungsdaten/verein/3955/plus/0?reldata=%262015",
@@ -44,23 +42,25 @@ url = [
 "http://www.transfermarkt.co.uk/south-africa/leistungsdaten/verein/3806/plus/0?reldata=AC15%262014",
 "http://www.transfermarkt.co.uk/guinea/leistungsdaten/verein/3856/plus/0?reldata=AC15%262014",
 "http://www.transfermarkt.co.uk/burkina-faso/leistungsdaten/verein/5872/plus/0?reldata=AC15%262014",
-"http://www.transfermarkt.co.uk/chad/leistungsdaten/verein/13978/plus/0?reldata=WMQ2%262016"
+"http://www.transfermarkt.co.uk/chad/leistungsdaten/verein/13978/plus/0?reldata=WMQ2%262016",
+"http://www.transfermarkt.co.uk/sudan/leistungsdaten/verein/13313/plus/0?reldata=AFCQ%262014",
+"http://www.transfermarkt.co.uk/rwanda/leistungsdaten/verein/3855/plus/0?reldata=AFCQ%262014"
 ]
 
 national = [
 "Uganda","Egypt","Nigeria","Togo","Morocco",
-"Sudan","Mauritania","Rwanda","Liberia","Angola",
-"Benin","Ethiopia","Botswana","Burundi","Niger",
-"Namibia","Libya","Mozambique","Madagascar","Kenya",
-"Swaziland","Tanzania","Comoros","Zambia","Algeria",
-"Ivory Coast","Ghana","Tunisia","Senegal","Cape Verde",
-"Cameroon","Congo","DR Congo","Mali","Gabon",
-"Equatorial Guinea","South Africa","Guinea","Burkina Faso","Chad"
+"Mauritania","Liberia","Angola","Benin","Ethiopia",
+"Botswana","Burundi","Niger","Namibia","Libya",
+"Mozambique","Madagascar","Kenya","Swaziland","Tanzania",
+"Comoros","Zambia","Algeria","Ivory Coast","Ghana",
+"Tunisia","Senegal","Cape Verde","Cameroon","Congo",
+"DR Congo","Mali","Gabon","Equatorial Guinea","South Africa",
+"Guinea","Burkina Faso","Chad","Sudan","Rwanda"
 ]
 
 connection = Mysql::new("127.0.0.1", "root", "motokokusanagi", "soccer_player")
 
-for j in 23..(url.size-1)
+for j in 38..(url.size-1)
   test_doc = Transfer.crawl(url[j])
   player_url = Transfer.get_player_url(test_doc)
   player_doc = Transfer.get_player_doc(player_url)

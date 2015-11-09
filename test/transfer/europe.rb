@@ -87,10 +87,10 @@ for j in 0..(url.size-1)
   division = Transfer.get_team_division(team_doc)
   minutes = Transfer.get_player_minutes(test_doc)
 
-  st = connection.prepare("insert into transfer (name,age,height,position,national,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?) on duplicate key update team=?,team_national=?,division=?,minutes=?")
+  st = connection.prepare("insert into transfer (name,age,height,position,national,area,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?,?) on duplicate key update area=?,team=?,team_national=?,division=?,minutes=?")
 
   for i in 0..(team_url.size-1)
-    st.execute name[i],age[i],height[i],position[i],national[j],team[i],team_national[i],division[i],minutes[i],team[i],team_national[i],division[i],minutes[i]
+    st.execute name[i],age[i],height[i],position[i],national[j],"Africa",team[i],team_national[i],division[i],minutes[i],"Africa",team[i],team_national[i],division[i],minutes[i]
   end
 end
 

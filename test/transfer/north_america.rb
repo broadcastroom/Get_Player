@@ -5,23 +5,24 @@ require 'mysql'
 require '../../lib/transfer'
 
 url = [
-"http://www.transfermarkt.co.uk/trinidad/leistungsdaten/verein/7149",
-"http://www.transfermarkt.co.uk/panama/leistungsdaten/verein/3577",
-"http://www.transfermarkt.co.uk/haiti/leistungsdaten/verein/14161",
-"http://www.transfermarkt.co.uk/guatemala/leistungsdaten/verein/13342",
-"http://www.transfermarkt.co.uk/el-salvador/leistungsdaten/verein/13951",
-"http://www.transfermarkt.co.uk/st-vincent/leistungsdaten/verein/17762",
-"http://www.transfermarkt.co.uk/mexico/leistungsdaten/verein/6303",
-"http://www.transfermarkt.co.uk/usatm/leistungsdaten/verein/3505",
-"http://www.transfermarkt.co.uk/costa-rica/leistungsdaten/verein/8497",
-"http://www.transfermarkt.co.uk/honduras/leistungsdaten/verein/3590",
-"http://www.transfermarkt.co.uk/jamaika/leistungsdaten/verein/3671"
+"http://www.transfermarkt.co.uk/trinidad/leistungsdaten/verein/7149/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/panama/leistungsdaten/verein/3577/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/haiti/leistungsdaten/verein/14161/plus/0?reldata=%262016",
+"http://www.transfermarkt.co.uk/guatemala/leistungsdaten/verein/13342/plus/0?reldata=%262016",
+"http://www.transfermarkt.co.uk/el-salvador/leistungsdaten/verein/13951/plus/0?reldata=%262016",
+"http://www.transfermarkt.co.uk/st-vincent/leistungsdaten/verein/17762/plus/0?reldata=%262016",
+"http://www.transfermarkt.co.uk/mexico/leistungsdaten/verein/6303/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/usatm/leistungsdaten/verein/3505/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/costa-rica/leistungsdaten/verein/8497/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/honduras/leistungsdaten/verein/3590/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/jamaika/leistungsdaten/verein/3671/plus/0?reldata=%262016",
+"http://www.transfermarkt.co.uk/canada/leistungsdaten/verein/3510/plus/0?reldata=%262016"
 ]
 
 national = [
 "Trinidad and Tobago","Panama","Haiti","Guatemala","El Salvador",
 "St.Vincent","Mexico","USA","Costa Rica","Honduras",
-"Jamaica"
+"Jamaica","Canada"
 ]
 
 connection = Mysql::new("127.0.0.1", "root", "motokokusanagi", "soccer_player")
@@ -41,10 +42,10 @@ for j in 0..(url.size-1)
   division = Transfer.get_team_division(team_doc)
   minutes = Transfer.get_player_minutes(test_doc)
 
-  st = connection.prepare("insert into transfer (name,age,height,position,national,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?) on duplicate key update team=?,team_national=?,division=?,minutes=?")
+  st = connection.prepare("insert into transfer (name,age,height,position,national,area,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?,?) on duplicate key update area=?,team=?,team_national=?,division=?,minutes=?")
 
   for i in 0..(team_url.size-1)
-    st.execute name[i],age[i],height[i],position[i],national[j],team[i],team_national[i],division[i],minutes[i],team[i],team_national[i],division[i],minutes[i]
+    st.execute name[i],age[i],height[i],position[i],national[j],"North America",team[i],team_national[i],division[i],minutes[i],"North America",team[i],team_national[i],division[i],minutes[i]
   end
 end
 
