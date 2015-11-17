@@ -10,7 +10,7 @@ url = [
 "http://www.transfermarkt.co.uk/portugal-u21/leistungsdaten/verein/16374/plus/0?reldata=U215%262014",
 "http://www.transfermarkt.co.uk/germany-u21/leistungsdaten/verein/3817/plus/0?reldata=U215%262014",
 "http://www.transfermarkt.co.uk/denmark-u21/leistungsdaten/verein/16783/plus/0?reldata=U215%262014",
-"http://www.transfermarkt.co.uk/fiji-u23/leistungsdaten/verein/35749/plus/0?reldata=OFC5%262015"
+"http://www.transfermarkt.co.uk/fiji-u23/leistungsdaten/verein/35749/plus/0?reldata=%262015"
 ]
 
 national = [

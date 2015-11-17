@@ -125,10 +125,18 @@ module Transfer
       td = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/td')
 
       for j in 0..(th.size-1)
-        if th[j]
-          th_td[th[j].text.gsub(/(\r\n|\r|\n|\f|\t)/,"")] = td[j].text.gsub(/(\r\n|\r|\n|\f|\t)/,"")
+        if th[j] then
+          th_td[th[j].text.gsub(/(\r\n|\r|\n|\f|\t|\u00A0)/,"")] = td[j].text.gsub(/(\r\n|\r|\n|\f|\t|\u00A0)/,"")
+        else
+          th_td[th[j]] = td[j]
         end
       end
+      
+      th_td["Current club:"].slice!(/\(.+/)
+
+      th_td["Current club:"].gsub("\u00A0", "")
+
+      th_td["Current club:"].strip!
 
       team.push(th_td["Current club:"])
     end

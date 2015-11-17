@@ -60,7 +60,7 @@ national = [
 
 connection = Mysql::new("127.0.0.1", "root", "motokokusanagi", "soccer_player")
 
-for j in 38..(url.size-1)
+for j in 0..(url.size-1)
   test_doc = Transfer.crawl(url[j])
   player_url = Transfer.get_player_url(test_doc)
   player_doc = Transfer.get_player_doc(player_url)
