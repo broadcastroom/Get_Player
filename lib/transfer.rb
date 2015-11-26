@@ -171,6 +171,37 @@ module Transfer
     return name
   end
 
+  def self.get_player_picture(player_doc)
+    name = []
+    picture = []
+    
+    for i in 0..(player_doc.size-1)
+      _name = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@title').text.gsub(/(\s)/,"_")
+      _picture = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@src').text
+
+      fileName = _name + ".jpg"
+      dirName = "/home/masa/soccer_test/player/"
+      filePath = dirName + fileName
+
+      open(filePath, 'wb') do |output|
+        open(_picture) do |data|
+          output.write(data.read)
+        end
+      end
+    end
+  end
+
+  def self.picture(player_doc)
+    picture = []
+    
+    for i in 0..(player_doc.size-1)
+      _picture = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@src')
+      picture.push(_picture.text)
+    end
+
+    return picture
+  end
+
   def self.get_team_national(team_doc)
     team_national = []
 

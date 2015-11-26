@@ -5,7 +5,7 @@ require 'mysql'
 require '../../lib/transfer'
 
 url = [
-"http://www.transfermarkt.co.uk/new-zealand/leistungsdaten/verein/9171/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/new-zealand/leistungsdaten/verein/9171/plus/0?reldata=%262015"
 ]
 
 national = [

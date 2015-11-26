@@ -5,16 +5,16 @@ require 'mysql'
 require '../../lib/transfer'
 
 url = [
-"http://www.transfermarkt.co.uk/argentina/leistungsdaten/verein/3437/plus/0?reldata=%262015",
-"http://www.transfermarkt.co.uk/brazil/leistungsdaten/verein/3439",
-"http://www.transfermarkt.co.uk/chile/leistungsdaten/verein/3700",
-"http://www.transfermarkt.co.uk/uruguay/leistungsdaten/verein/3449",
-"http://www.transfermarkt.co.uk/ecuador/leistungsdaten/verein/5750",
-"http://www.transfermarkt.co.uk/peru/leistungsdaten/verein/3584",
-"http://www.transfermarkt.co.uk/paraguay/leistungsdaten/verein/3581",
-"http://www.transfermarkt.co.uk/bolivia/leistungsdaten/verein/5233",
-"http://www.transfermarkt.co.uk/venezuela/leistungsdaten/verein/3504",
-"http://www.transfermarkt.co.uk/colombia/leistungsdaten/verein/3816/plus/0?reldata=CA15%262014"
+"http://www.transfermarkt.co.uk/argentina/leistungsdaten/verein/3437/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/brazil/leistungsdaten/verein/3439/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/chile/leistungsdaten/verein/3700/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/uruguay/leistungsdaten/verein/3449/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/ecuador/leistungsdaten/verein/5750/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/peru/leistungsdaten/verein/3584/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/paraguay/leistungsdaten/verein/3581/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/bolivia/leistungsdaten/verein/5233/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/venezuela/leistungsdaten/verein/3504/plus/0?reldata=WMQ4%262015",
+"http://www.transfermarkt.co.uk/colombia/leistungsdaten/verein/3816/plus/0?reldata=WMQ4%262015"
 ]
 
 national = [
@@ -39,10 +39,10 @@ for j in 0..(url.size-1)
   division = Transfer.get_team_division(team_doc)
   minutes = Transfer.get_player_minutes(test_doc)
 
-  st = connection.prepare("insert into transfer (name,age,height,position,national,area,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?,?) on duplicate key update area=?,team=?,team_national=?,division=?,minutes=?")
+  st = connection.prepare("insert into transfer (name,age,height,position,national,area,team,team_national,division,minutes) values (?,?,?,?,?,?,?,?,?,?) on duplicate key update area=?,team=?,team_national=?,division=?")
 
   for i in 0..(team_url.size-1)
-    st.execute name[i],age[i],height[i],position[i],national[j],"South America",team[i],team_national[i],division[i],minutes[i],"South America",team[i],team_national[i],division[i],minutes[i]
+    st.execute name[i],age[i],height[i],position[i],national[j],"South America",team[i],team_national[i],division[i],minutes[i],"South America",team[i],team_national[i],division[i]
   end
 end
 
