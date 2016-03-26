@@ -13,12 +13,13 @@ url = [
 "http://www.transfermarkt.co.uk/paraguay/leistungsdaten/verein/3581",
 "http://www.transfermarkt.co.uk/bolivia/leistungsdaten/verein/5233",
 "http://www.transfermarkt.co.uk/venezuela/leistungsdaten/verein/3504",
-"http://www.transfermarkt.co.uk/colombia/leistungsdaten/verein/3816"
+"http://www.transfermarkt.co.uk/colombia/leistungsdaten/verein/3816",
+"http://www.transfermarkt.co.uk/colombia/leistungsdaten/verein/3816/plus/0?reldata=%262014"
 ]
 
 for j in 0..(url.size-1)
+  p url[j]
+  p j*100/url.length
   test_doc = Transfer.crawl(url[j])
-  player_url = Transfer.get_player_url(test_doc)
-  player_doc = Transfer.get_player_doc(player_url)
-  p Transfer.get_player_picture(player_doc)
+  Transfer.get_player_picture(test_doc)
 end

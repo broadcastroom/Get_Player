@@ -10,18 +10,18 @@ module Transfer
 
   def self.get_player_doc(player_url)
     player_doc = []
-    
+
     for i in 0..(player_url.size-1)
       _player_doc = self.crawl('http://www.transfermarkt.co.uk'+player_url[i])
       player_doc.push(_player_doc)
     end
-    
+
     return player_doc
   end
 
   def self.get_player_minutes(doc)
     minutes = []
-    
+
     minutes_odd = doc.xpath('//table[@class="items"]/tbody/tr[@class="odd"]/td[@class="rechts  "]')
     for i in 0..(minutes_odd.size-1)
       minutes.push(minutes_odd[i].text)
@@ -48,14 +48,19 @@ module Transfer
 
   def self.get_player_age(player_doc)
     age = []
-    
+    th_td = {}
+
     for i in 0..(player_doc.size-1)
-      _age = player_doc[i].xpath('//tr[@class="hide-for-small"]/td')
-      if _age then
-        age.push(_age.text)
-      elsif !_age then
-        age.push(_age)
+      th = player_doc[i].xpath('//div[@class="spielerdaten"]/table[@class="auflistung"]/tr/th')
+      td = player_doc[i].xpath('//div[@class="spielerdaten"]/table[@class="auflistung"]/tr/td')
+
+      for j in 0..(th.size-1)
+        if th[j]
+          th_td[th[j].text.gsub(/(\r\n|\r|\n|\f|\t)/,"")] = td[j].text.gsub(/(\r\n|\r|\n|\f|\t)/,"")
+        end
       end
+      
+      age.push(th_td["Age:"])
     end
 
     return age
@@ -66,16 +71,16 @@ module Transfer
     th_td = {}
 
     for i in 0..(player_doc.size-1)
-      th = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/th')
-      td = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/td')
+      th = player_doc[i].xpath('//div[@class="dataDaten"]/p/span[@class="dataItem"]')
+      td = player_doc[i].xpath('//div[@class="dataDaten"]/p/span[@class="dataValue"]')
 
       for j in 0..(th.size-1)
         if th[j]
           th_td[th[j].text.gsub(/(\r\n|\r|\n|\f|\t)/,"")] = td[j].text.gsub(/(\r\n|\r|\n|\f|\t)/,"")
         end
       end
-
-      position.push(th_td["Position:"])
+      
+      position.push(th_td["Position:"].strip!)
     end
 
     return position
@@ -86,8 +91,8 @@ module Transfer
     th_td = {}
 
     for i in 0..(player_doc.size-1)
-      th = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/th')
-      td = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/td')
+      th = player_doc[i].xpath('//div[@class="spielerdaten"]/table[@class="auflistung"]/tr/th')
+      td = player_doc[i].xpath('//div[@class="spielerdaten"]/table[@class="auflistung"]/tr/td')
 
       for j in 0..(th.size-1)
         if th[j]
@@ -103,50 +108,34 @@ module Transfer
 
   def self.get_team_url(player_doc)
     team_url = []
-    
+
     for i in 0..(player_doc.size-1)
-      team_doc = player_doc[i].xpath('//div[@class="wappen"]/a/@href')
+      team_doc = player_doc[i].xpath('//div[@class="dataZusatzDaten"]/span[@class="hauptpunkt"]/a/@href')
       if team_doc then
         team_url.push(team_doc.text)
       elsif !team_doc then
         team_url.push(team_doc)
       end
     end
-    
+
     return team_url
   end
 
   def self.get_player_team(player_doc)
     team = []
-    th_td = {}
 
     for i in 0..(player_doc.size-1)
-      th = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/th')
-      td = player_doc[i].xpath('//div[@class="list"]/table[@class="profilheader"]/tr/td')
+      team_name = player_doc[i].xpath('//div[@class="dataZusatzDaten"]/span[@class="hauptpunkt"]/a').text
 
-      for j in 0..(th.size-1)
-        if th[j] then
-          th_td[th[j].text.gsub(/(\r\n|\r|\n|\f|\t|\u00A0)/,"")] = td[j].text.gsub(/(\r\n|\r|\n|\f|\t|\u00A0)/,"")
-        else
-          th_td[th[j]] = td[j]
-        end
-      end
-      
-      th_td["Current club:"].slice!(/\(.+/)
-
-      th_td["Current club:"].gsub("\u00A0", "")
-
-      th_td["Current club:"].strip!
-
-      team.push(th_td["Current club:"])
+      team.push(team_name)
     end
-    
+
     return team
   end
 
   def self.get_player_url(url_doc)
     url = []
-    
+
     url_odd = url_doc.xpath('//table[@class="items"]/tbody/tr[@class="odd"]/td/table[@class="inline-table"]/tr/td/div/span[@class="hide-for-small"]/a/@href')
     for i in 0..(url_odd.size-1)
       url.push(url_odd[i].text)
@@ -156,7 +145,7 @@ module Transfer
     for i in 0..(url_even.size-1)
       url.push(url_even[i].text)
     end
-    
+
     return url
   end
 
@@ -164,27 +153,49 @@ module Transfer
     name = []
 
     for i in 0..(player_doc.size-1)
-      _name = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@title')
+      _name = player_doc[i].xpath('//div[@class="dataBild"]/img/@title')
       name.push(_name.text)
     end
 
     return name
   end
 
-  def self.get_player_picture(player_doc)
+  def self.get_player_picture(test_doc)
     name = []
     picture = []
-    
-    for i in 0..(player_doc.size-1)
-      _name = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@title').text.gsub(/(\s)/,"_")
-      _picture = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@src').text
 
-      fileName = _name + ".jpg"
+    name_odd = test_doc.xpath('//table[@class="items"]/tbody/tr[@class="odd"]/td/table[@class="inline-table"]/tr/td/a/img/@title')
+
+    for i in 0..(name_odd.size-1)
+      name.push(name_odd[i].text.gsub(/(\s)/,"_"))
+    end
+
+    name_even = test_doc.xpath('//table[@class="items"]/tbody/tr[@class="even"]/td/table[@class="inline-table"]/tr/td/a/img/@title')
+
+    for i in 0..(name_even.size-1)
+      name.push(name_even[i].text.gsub(/(\s)/,"_"))
+    end
+
+    picture_odd = test_doc.xpath('//table[@class="items"]/tbody/tr[@class="odd"]/td/table[@class="inline-table"]/tr/td/a/img/@src')
+
+    for i in 0..(picture_odd.size-1)
+      picture.push(picture_odd[i].text)
+    end
+
+    picture_even = test_doc.xpath('//table[@class="items"]/tbody/tr[@class="even"]/td/table[@class="inline-table"]/tr/td/a/img/@src')
+
+    for i in 0..(picture_even.size-1)
+      picture.push(picture_even[i].text)
+    end
+
+    for i in 0..(name.size-1)
+
+      fileName = name[i] + ".jpg"
       dirName = "/home/masa/soccer_test/player/"
       filePath = dirName + fileName
 
       open(filePath, 'wb') do |output|
-        open(_picture) do |data|
+        open(picture[i]) do |data|
           output.write(data.read)
         end
       end
@@ -193,7 +204,7 @@ module Transfer
 
   def self.picture(player_doc)
     picture = []
-    
+
     for i in 0..(player_doc.size-1)
       _picture = player_doc[i].xpath('//div[@class="box-content"]/div[@class="headerfoto"]/img/@src')
       picture.push(_picture.text)
@@ -213,7 +224,7 @@ module Transfer
         team_national.push(_team_national)
       end
     end
-    
+
     return team_national
   end
 

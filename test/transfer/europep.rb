@@ -35,7 +35,6 @@ url = [
 "http://www.transfermarkt.co.uk/serbia/leistungsdaten/verein/3438/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/finland/leistungsdaten/verein/3443/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/bulgaria/leistungsdaten/verein/3394/plus/0?reldata=EMQ%262014",
-"http://www.transfermarkt.co.uk/faroe-islands/leistungsdaten/verein/9173/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/estonia/leistungsdaten/verein/6133/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/armenia/leistungsdaten/verein/6219/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/belarus/leistungsdaten/verein/3450/plus/0?reldata=EMQ%262014",
@@ -54,11 +53,15 @@ url = [
 "http://www.transfermarkt.co.uk/georgia/leistungsdaten/verein/3669/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/romania/leistungsdaten/verein/3447/plus/0?reldata=EMQ%262014",
 "http://www.transfermarkt.co.uk/france/leistungsdaten/verein/3377/plus/0?reldata=EMQ%262014",
+"http://www.transfermarkt.co.uk/france/leistungsdaten/verein/3377/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/israel/leistungsdaten/verein/5547/plus/0?reldata=%262015",
+"http://www.transfermarkt.co.uk/israel/leistungsdaten/verein/5547/plus/0?reldata=%262014",
+"http://www.transfermarkt.co.uk/faroe-islands/leistungsdaten/verein/9173/plus/0?reldata=EMQ%262014"
 ]
 
-for j in 1..(url.size-1)
+for j in 0..(url.size-1)
+  p url[j]
+  p j*100/url.length
   test_doc = Transfer.crawl(url[j])
-  player_url = Transfer.get_player_url(test_doc)
-  player_doc = Transfer.get_player_doc(player_url)
-  p Transfer.get_player_picture(player_doc)
+  Transfer.get_player_picture(test_doc)
 end
